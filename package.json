@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/ct-material-dashboard-pro-react.git"
+    "url": "git+https://github.com/carloscuv/simulador.git"
   },
   "dependencies": {
     "@asseinfo/react-kanban": "2.2.0",

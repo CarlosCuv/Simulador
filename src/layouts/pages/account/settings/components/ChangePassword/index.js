@@ -44,7 +44,9 @@ function ChangePassword() {
   const [ventas, setVentas] = useState(0);
   const [servicios, setServicios] = useState(0);
   const [valorTotal, setValorTotal] = useState(0);
-  const [valorEntrada, setValorEntrada] = useState(0);
+  const [porcEntrada, setPorcEntrada] = useState(0);
+  const [valorEntrada, setValorEntrada] = useState(valorTotal *(porcEntrada/100));
+  
   const [valorSaldo, setValorSaldo] = useState(valorTotal - valorEntrada);
   const [tasa, setTasa] = useState(0);
   const [plazo, setPlazo] = useState(240);
@@ -69,6 +71,12 @@ function ChangePassword() {
   const [opcion3, setOpcion3] = useState(0);
 
   const [recomendacion, setRecomendacion] = useState("");
+  const [recomendacion1, setRecomendacion1] = useState("");
+  const [recomendacion2, setRecomendacion2] = useState("");
+  const [recomendacion3, setRecomendacion3] = useState("");
+  const [recomendacion4, setRecomendacion4] = useState("");
+  const [recomendacion5, setRecomendacion5] = useState("");
+
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
 
@@ -132,7 +140,9 @@ function ChangePassword() {
 
   const handleCalcular = () => {
     let tasaEfectiva = tasa / 100 / 12;
-    let valorS = valorTotal - valorEntrada;
+    let varValorEntrada = valorTotal * (porcEntrada /100);
+    setValorEntrada(varValorEntrada);
+    let valorS = valorTotal - varValorEntrada;
     let tempValor =
       Number(valorS) +
       Number(gastosAdministrativos) +
@@ -358,16 +368,33 @@ function ChangePassword() {
                   <Grid item xs={12} sm={4}>
                     <MDInput
                       fullWidth
+                      label="Porcentaje Entrada"
+                      inputProps={{
+                        type: "number",
+                        autoComplete: "",
+                        value: porcEntrada,
+                        onChange: (e) => setPorcEntrada(e.target.value),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <MDInput
+                      fullWidth
                       label="Valor de la Entrada"
                       inputProps={{
                         type: "number",
                         autoComplete: "",
                         value: valorEntrada,
-                        onChange: (e) => setValorEntrada(e.target.value),
+                        //onChange: (e) => setValorEntrada(e.target.value),
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                <Grid item xs={12} sm={4}>
                     <MDInput
                       fullWidth
                       label="Valor Saldo"
@@ -379,10 +406,6 @@ function ChangePassword() {
                       }}
                     />
                   </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={3}>
                   <Grid item xs={12} sm={4}>
                     <MDInput
                       fullWidth
@@ -407,7 +430,7 @@ function ChangePassword() {
                       }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  {/* <Grid item xs={12} sm={4}>
                     <MDInput
                       fullWidth
                       label="Gastos Administrativos"
@@ -418,12 +441,12 @@ function ChangePassword() {
                         onChange: (e) => setGastosAdministrativos(e.target.value),
                       }}
                     />
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Grid>
               <Grid item xs={12}>
                 <Grid container spacing={3}>
-                  <Grid item xs={12} sm={4}>
+                  {/* <Grid item xs={12} sm={4}>
                     <MDInput
                       fullWidth
                       label="Gastos Legales"
@@ -434,7 +457,7 @@ function ChangePassword() {
                         onChange: (e) => setGastosLegales(e.target.value),
                       }}
                     />
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} sm={4}>
                     <MDInput
                       fullWidth
@@ -444,34 +467,6 @@ function ChangePassword() {
                         autoComplete: "",
                         value: avaluo,
                         onChange: (e) => setAvaluo(e.target.value),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <MDInput
-                      fullWidth
-                      label="Solca"
-                      inputProps={{
-                        type: "number",
-                        autoComplete: "",
-                        value: solca,
-                        onChange: (e) => setSolca(e.target.value),
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={4}>
-                    <MDInput
-                      fullWidth
-                      label="Seguros"
-                      inputProps={{
-                        type: "number",
-                        autoComplete: "",
-                        value: seguro,
-                        onChange: (e) => setSeguro(e.target.value),
                       }}
                     />
                   </Grid>
@@ -492,6 +487,35 @@ function ChangePassword() {
                       Calcular
                     </MDButton>
                   </Grid>
+                  {/* <Grid item xs={12} sm={4}>
+                    <MDInput
+                      fullWidth
+                      label="Solca"
+                      inputProps={{
+                        type: "number",
+                        autoComplete: "",
+                        value: solca,
+                        onChange: (e) => setSolca(e.target.value),
+                      }}
+                    />
+                  </Grid> */}
+                </Grid>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
+                  {/* <Grid item xs={12} sm={4}>
+                    <MDInput
+                      fullWidth
+                      label="Seguros"
+                      inputProps={{
+                        type: "number",
+                        autoComplete: "",
+                        value: seguro,
+                        onChange: (e) => setSeguro(e.target.value),
+                      }}
+                    />
+                  </Grid> */}
+                  
                 </Grid>
               </Grid>
             </Grid>
@@ -645,12 +669,68 @@ function ChangePassword() {
             <Divider />
             <Grid item xs={12}>
                 <MDInput
-                  fullWidth
+                  style={{width: "320px"}}
                   label="Recomendaciones"
                   inputProps={{
+                    maxLength:50,
                     type: "text",
                     value: recomendacion,
                     onChange: (e) => setRecomendacion(e.target.value),
+                  }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <MDInput
+                  style={{width: "320px"}}
+                  inputProps={{
+                    maxLength:50,
+                    type: "text",
+                    value: recomendacion1,
+                    onChange: (e) => setRecomendacion1(e.target.value),
+                  }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <MDInput
+                  style={{width: "320px"}}
+                  inputProps={{
+                    maxLength:50,
+                    type: "text",
+                    value: recomendacion2,
+                    onChange: (e) => setRecomendacion2(e.target.value),
+                  }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <MDInput
+                  style={{width: "320px"}}
+                  inputProps={{
+                    maxLength:50,
+                    type: "text",
+                    value: recomendacion3,
+                    onChange: (e) => setRecomendacion3(e.target.value),
+                  }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <MDInput
+                  style={{width: "320px"}}
+                  inputProps={{
+                    maxLength:50,
+                    type: "text",
+                    value: recomendacion4,
+                    onChange: (e) => setRecomendacion4(e.target.value),
+                  }}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <MDInput
+                  style={{width: "320px"}}
+                  inputProps={{
+                    maxLength:50,
+                    type: "text",
+                    value: recomendacion5,
+                    onChange: (e) => setRecomendacion5(e.target.value),
                   }}
                 />
             </Grid>
@@ -780,7 +860,7 @@ function ChangePassword() {
     doc.setFontSize(12);
     doc.setLineWidth(1);
     doc.line(25, 85, 570, 85);
-    doc.text("INFORMACIÓN PRECALIFICACIÓN", 300, 100, null, null, "center");
+    doc.text("SIMULADOR", 300, 100, null, null, "center");
     doc.setLineWidth(1);
     doc.line(25, 105, 570, 105);
 
@@ -815,52 +895,79 @@ function ChangePassword() {
     doc.setFont("arial", "normal");
     doc.text(tipo, 300, 215, null, null, "left");
 
-    doc.setFont("arial", "bold");
-    doc.text("Venta de Productos o Servicios: ", 30, 235, null, null, "left");
-    doc.setFont("arial", "normal");
-    doc.text(tipoVenta, 300, 235, null, null, "left");
+    if (tipo == "Independiente" ){
+      doc.setFont("arial", "bold");
+      doc.text("Venta de Productos o Servicios: ", 30, 235, null, null, "left");
+      doc.setFont("arial", "normal");
+      doc.text(tipoVenta, 300, 235, null, null, "left");
+    }
 
     doc.setFont("arial", "bold");
     doc.text("Valor del Bien: ", 30, 255, null, null, "left");
     doc.setFont("arial", "normal");
-    doc.text('$ '+valorTotal, 300, 255, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(valorTotal), 300, 255, null, null, "left");
 
     doc.setFont("arial", "bold");
     doc.text("Entrada: ", 30, 275, null, null, "left");
     doc.setFont("arial", "normal");
-    doc.text('$ '+valorEntrada, 300, 275, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(valorEntrada), 300, 275, null, null, "left");
 
     doc.setFont("arial", "bold");
     doc.text("Saldo: ", 30, 295, null, null, "left");
     doc.setFont("arial", "normal");
-    doc.text('$ '+valorSaldo.toString(), 300, 295, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(valorSaldo), 300, 295, null, null, "left");
 
     doc.setFont("arial", "bold");
     doc.text("Ingresos Requeridos: ", 30, 315, null, null, "left");
-    doc.setFont("arial", "normal");
-    doc.text('$ '+ingresos.toString(), 300, 315, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(ingresos), 300, 315, null, null, "left");
 
     doc.setFont("arial", "bold");
     doc.text("Saldo a Financiar: ", 30, 345, null, null, "left");
     doc.setFont("arial", "normal");
-    doc.text('$ '+valorSaldo.toString(), 300, 345, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(valorSaldo), 300, 345, null, null, "left");
 
 
     doc.text("120 meses: ", 30, 365, null, null, "left");
-    doc.text('$ '+opcion1.toString(), 300, 365, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(opcion1), 300, 365, null, null, "left");
 
     doc.text("180 meses: ", 30, 385, null, null, "left");
-    doc.text('$ '+opcion2.toString(), 300, 385, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(opcion2), 300, 385, null, null, "left");
 
     doc.text("240 meses: ", 30, 405, null, null, "left");
-    doc.text('$ '+opcion3.toString(), 300, 405, null, null, "left");
+    doc.text('$ '+new Intl.NumberFormat('en-Us').format(opcion3), 300, 405, null, null, "left");
 
     doc.text("Recomendaciones al cliente: ", 30, 455, null, null, "left");
     doc.text(recomendacion, 300, 455, null, null, "left");
 
-    doc.text("Ventas Mensuales a facturar ante el SRI: ", 30, 475, null, null, "left");
-    doc.text(tipoVenta == "Producto"? '$ '+ventas.toString():'$ '+servicios.toString(), 300, 475, null, null, "left");
-    
+    let i = 475;
+
+    if (recomendacion1 != ""){
+      doc.text(recomendacion1, 300, i, null, null, "left");
+      i = i+20;
+    }
+    if (recomendacion2 != ""){
+      doc.text(recomendacion2, 300, i, null, null, "left");
+      i = i+20;
+    }
+    if (recomendacion3 != ""){
+      doc.text(recomendacion3, 300, i, null, null, "left");
+      i = i+20;
+    }
+    if (recomendacion4 != ""){
+      doc.text(recomendacion4, 300, i, null, null, "left");
+      i = i+20;
+    }
+    if (recomendacion5 != ""){
+      doc.text(recomendacion5, 300, i, null, null, "left");
+      i = i+20;
+    }
+
+
+    if (tipo == "Independiente" ){
+      doc.text("Ventas Mensuales a facturar ante el SRI: ", 30, i, null, null, "left");
+      doc.text(tipoVenta == "Producto"? '$ '+new Intl.NumberFormat('en-Us').format(ventas):'$ '+new Intl.NumberFormat('en-Us').format(servicios), 300, i, null, null, "left");
+    }
+
     doc.setFont("arial", "bold");
     doc.text("Observación: ", 50, 760, null, null, "left");
     doc.setFont("arial", "normal",10);
